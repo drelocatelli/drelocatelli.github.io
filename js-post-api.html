@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript API POST</title>
+</head>
+<body>
+    <table border="0" width="100%" align="center">
+        <form id="post-api" method="post">
+            <tr>
+                <td colspan="2">
+                    <h3>PURE JS POST API GENERATOR - <a href="https://github.com/drelocatelli/drelocatelli.github.io">DRELOCATELLI</a></h3>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label for="url">URL</label>
+                    <input type="text" id="url">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="chave">Chave</label>
+                    <input type="text" id="chave">
+                    <addKey></addKey>
+                </td>
+                <td>
+                    <label for="valor">Valor</label>
+                    <input type="text" id="valor">
+                    <addValue></addValue>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button" name="add">Adicionar campo</button>
+                    <button type="button" name="remove">Remover campo</button>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td colspan="2">
+                    <button type="submit">
+                        Postar requisição
+                    </button>
+                </td>
+            </tr> -->
+        </form>
+    </table>
+</body>
+</html>
+
+<script>
+
+    let form = document.querySelector('#post-api')
+
+    let addbtn = document.querySelector('button[name="add"]')
+    let removebtn = document.querySelector('button[name="remove"]')
+
+
+    function elementsOpt(opt){
+        let addValue = document.querySelector('addValue')
+        let addKey = document.querySelector('addKey')
+
+
+        if(opt == "add"){
+            let inputValue = document.createElement('input')
+            inputValue.id = `valor_${addValue.childNodes.length + 1}`
+            addValue.appendChild(inputValue)
+            
+            let inputKey = document.createElement('input')
+            inputKey.id = `chave_${addKey.childNodes.length + 1}`
+            addKey.appendChild(inputKey)
+        }
+
+        if(opt == "remove"){
+            addKey.lastElementChild.remove()
+            addValue.lastElementChild.remove()
+        }
+
+
+        if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+            removebtn.style.display = "inline-block"
+
+        }else{
+            removebtn.style.display = "none"
+        }
+
+        
+    }
+
+    
+    addbtn.onclick = function(){
+        
+        elementsOpt("add")
+
+    }
+
+    removebtn.onclick = function(){
+        let addValue = document.querySelector('addValue')
+        
+        elementsOpt("remove")
+
+    }
+
+</script>
+
+<script id="apicode">
+
+</script>
+
+
+<style>
+
+
+    button:nth-child(1){
+        margin-right: 25px;
+    }
+    
+    tr:nth-child(4), tr:nth-child(4){
+        text-align: center;
+    }
+
+    button, label{cursor:pointer;}
+    table{
+        display: contents;
+    }
+
+    tr:nth-child(3) > td:nth-child(1) {
+        display:block;
+        margin-right:12px;
+    }
+
+    * {
+        font-family:sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg") center center no-repeat;
+      background-size: cover;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .contact-us {
+      background: #f8f4e5;
+      padding: 50px 100px;
+      border: 2px solid black;
+      box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px black;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      font-size: 14pt;
+      line-height: 28pt;
+      font-family: sans-serif;
+      margin-bottom: 28pt;
+      border: none;
+      border-bottom: 5px solid black;
+      background: #f8f4e5;
+      min-width: 250px;
+      padding-left: 5px;
+      outline: none;
+      color: black;
+    }
+
+    input:focus {
+      border-bottom: 5px solid #ffa580;
+    }
+
+    button {
+      /* display: block; */
+      margin: 0 auto;
+      line-height: 28pt;
+      padding: 0 20px;
+      background: #ffa580;
+      letter-spacing: 2px;
+      transition: 0.2s all ease-in-out;
+      outline: none;
+      border: 1px solid black;
+      box-shadow: 3px 3px 1px #95a4ff, 3px 3px 1px 1px black;
+    }
+    button:hover {
+      background: #95a4ff;
+      color: black;
+      border: 1px solid black;
+    }
+
+    ::selection {
+      background: #ffc8ff;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+      border-bottom: 5px solid #95a4ff;
+      -webkit-text-fill-color: #2A293E;
+      -webkit-box-shadow: 0 0 0px 1000px #f8f4e5 inset;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+</style>
