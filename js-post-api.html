@@ -79,9 +79,11 @@
         }
 
 
-        if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+        if(addValue.childNodes.length < 7 && addKey.childNodes.length < 7 ){
             removebtn.style.display = "inline-block"
-
+            addbtn.style.display = "inline-block"
+        }else if(addValue.childNodes.length == 7 && addKey.childNodes.length == 7 ){
+            addbtn.style.display = "none"
         }else{
             removebtn.style.display = "none"
         }
