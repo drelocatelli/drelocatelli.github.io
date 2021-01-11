@@ -17,34 +17,30 @@
             <tr>
                 <td colspan="2">
                     <label for="url">URL</label>
-                    <input type="text" id="url">
+                    <input type="text" id="url" value="https://reqres.in/api/users">
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="chave">Chave</label>
-                    <input type="text" id="chave">
+                    <input type="text" class="chave">
                     <addKey></addKey>
                 </td>
                 <td>
                     <label for="valor">Valor</label>
-                    <input type="text" id="valor">
+                    <input type="text" class="valor">
                     <addValue></addValue>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <button type="button" name="add">Adicionar campo</button>
-                    <button type="button" name="remove">Remover campo</button>
+                <td>
+                    <button type="button" name="add">+</button>
+                    <button type="button" name="remove">─</button>
+                </td>
+                <td>
+                    <button type="submit">POST</button>
                 </td>
             </tr>
-            <!-- <tr>
-                <td colspan="2">
-                    <button type="submit">
-                        Postar requisição
-                    </button>
-                </td>
-            </tr> -->
         </form>
     </table>
 </body>
@@ -56,20 +52,21 @@
 
     let addbtn = document.querySelector('button[name="add"]')
     let removebtn = document.querySelector('button[name="remove"]')
-
-
+    let submit = document.querySelector('button[type="submit"]')
+    let addValue = document.querySelector('addValue')
+    let addKey = document.querySelector('addKey')
+    
+    
     function elementsOpt(opt){
-        let addValue = document.querySelector('addValue')
-        let addKey = document.querySelector('addKey')
-
-
         if(opt == "add"){
             let inputValue = document.createElement('input')
-            inputValue.id = `valor_${addValue.childNodes.length + 1}`
+            inputValue.className = "valor"
+            inputValue.dataset.item = `valor_${addValue.childNodes.length + 1}`
             addValue.appendChild(inputValue)
             
             let inputKey = document.createElement('input')
-            inputKey.id = `chave_${addKey.childNodes.length + 1}`
+            inputKey.className = "chave"
+            inputKey.dataset.item = `chave_${addKey.childNodes.length + 1}`
             addKey.appendChild(inputKey)
         }
 
@@ -79,31 +76,51 @@
         }
 
 
-        if(addValue.childNodes.length < 7 && addKey.childNodes.length < 7 ){
-            removebtn.style.display = "inline-block"
-            addbtn.style.display = "inline-block"
-        }else if(addValue.childNodes.length == 7 && addKey.childNodes.length == 7 ){
-            addbtn.style.display = "none"
+        if(addValue.childNodes.length <= 6 && addKey.childNodes.length <= 6 ){
+            if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+                removebtn.style.visibility = "visible"
+                addbtn.style.visibility = "visible"
+            }else{
+                addbtn.style.visibility = "visible"
+                removebtn.style.visibility = "hidden"
+            }
         }else{
-            removebtn.style.display = "none"
+            addbtn.style.visibility = "hidden"
+            removebtn.style.visibility = "visible"
         }
-
-        
     }
 
     
     addbtn.onclick = function(){
-        
         elementsOpt("add")
-
     }
 
     removebtn.onclick = function(){
         let addValue = document.querySelector('addValue')
-        
         elementsOpt("remove")
+    }
+
+    submit.onclick = function(e){
+        e.preventDefault();
+
+        let data = {}
+
+        if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+            let inputKey = document.querySelectorAll('.chave').value
+            let inputValue = document.querySelectorAll('.valor').value
+
+            console.dir(...inputKey)
+
+
+        }else{
+            let inputKey = document.querySelector('.chave')
+            let inputValue = document.querySelector('.valor')
+            data.push(inputKey.value)
+            data.push(inputValue.value)
+        }
 
     }
+    
 
 </script>
 
@@ -113,9 +130,11 @@
 
 
 <style>
+    button[name="remove"]{
+        visibility: hidden;
+    }
 
-
-    button:nth-child(1){
+    button:nth-child(1),button:nth-child(2){
         margin-right: 25px;
     }
     
@@ -177,16 +196,18 @@
     }
 
     button {
-      /* display: block; */
-      margin: 0 auto;
-      line-height: 28pt;
-      padding: 0 20px;
-      background: #ffa580;
-      letter-spacing: 2px;
-      transition: 0.2s all ease-in-out;
-      outline: none;
-      border: 1px solid black;
-      box-shadow: 3px 3px 1px #95a4ff, 3px 3px 1px 1px black;
+        /* display: block; */
+        margin: 0 auto;
+        font-size: 20px;
+        box-sizing: border-box;
+        line-height: 28pt;
+        padding: 0 20px;
+        background: #ffa580;
+        letter-spacing: 2px;
+        transition: 0.2s background-color ease-in-out;
+        outline: none;
+        border: 1px solid black;
+        box-shadow: 3px 3px 1px #95a4ff, 3px 3px 1px 1px black;
     }
     button:hover {
       background: #95a4ff;
