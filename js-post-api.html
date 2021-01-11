@@ -161,8 +161,9 @@
         modal.style.display = "block"
         closeModal.style.display = "block"
         data = JSON.stringify(response)
+        data = data.replaceAll('"','\'')
 
-        code.innerHTML = code.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data.replaceAll('"','\'')).replaceAll('`', '\"').replace('displayModal(response)', '').replaceAll('     ','')
+        code.innerHTML = code.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replace('displayModal(response)', '').replaceAll('     ','')
         codeapiEl.innerHTML = `<pre>${code.innerHTML}</pre>`
 
         response = JSON.stringify(response, null, 4)
@@ -170,8 +171,7 @@
 
 
         closeModal.onclick = function(){
-            modal.style.display = "none"
-            closeModal.style.display = "none"
+            window.location.reload()
         }
 
 
@@ -187,8 +187,8 @@
       });
 
       request.json().then(function(response) {
-        displayModal(response)
         console.log(response);
+        displayModal(response)
       });
     }//POST
 </script>
