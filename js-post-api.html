@@ -46,7 +46,12 @@
 
     <div id="close-modal">x</div>
     <div id="modal">
+        <h3>Código gerado:</h3>
+        <br>
+        <codeapi></codeapi>
+        <br>
         <h3>Resposta:</h3>
+        <br>
         <br>
         <response></response>
     </div>
@@ -113,26 +118,7 @@
         elementsOpt("remove")
     }
 
-    function displayModal(response){
-        let responseEl = document.querySelector('response')
-        let modal = document.querySelector('#modal')
-        let closeModal = document.querySelector('#close-modal')
-
-        modal.style.display = "block"
-        closeModal.style.display = "block"
-        response = JSON.stringify(response, null, 4)
-        
-        responseEl.innerHTML = `<pre>${response}</pre>`
-
-        closeModal.onclick = function(){
-            modal.style.display = "none"
-            closeModal.style.display = "none"
-        }
-
-
-    }
-
-
+    
     submit.onclick = function(e){
         if(form.checkValidity() == true){
             e.preventDefault();
@@ -164,6 +150,32 @@
         }
     
     }
+
+    function displayModal(response){
+        let responseEl = document.querySelector('response')
+        let codeapiEl = document.querySelector('codeapi')
+        let code = document.querySelector('script#apicode')
+        let modal = document.querySelector('#modal')
+        let closeModal = document.querySelector('#close-modal')
+
+        modal.style.display = "block"
+        closeModal.style.display = "block"
+        data = JSON.stringify(response)
+
+        code.innerHTML = code.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data.replaceAll('"','\'')).replaceAll('`', '\"').replace('displayModal(response)', '').replaceAll('     ','')
+        codeapiEl.innerHTML = `<pre>${code.innerHTML}</pre>`
+
+        response = JSON.stringify(response, null, 4)
+        responseEl.innerHTML = `<pre>${response}</pre>`
+
+
+        closeModal.onclick = function(){
+            modal.style.display = "none"
+            closeModal.style.display = "none"
+        }
+
+
+    }
     
 </script>
 
@@ -178,12 +190,12 @@
         displayModal(response)
         console.log(response);
       });
-    }
+    }//POST
 </script>
 
 
 <style>
-    response{
+    response, codeapi{
         color:rgb(92, 92, 92);
         font-family: monospace;
     }
