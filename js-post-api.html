@@ -17,18 +17,18 @@
             <tr>
                 <td colspan="2">
                     <label for="url">URL</label>
-                    <input type="text" id="url" value="https://reqres.in/api/users">
+                    <input type="text" id="url" value="https://reqres.in/api/users" required>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="chave">Chave</label>
-                    <input type="text" class="chave">
+                    <input type="text" class="chave" required>
                     <addKey></addKey>
                 </td>
                 <td>
                     <label for="valor">Valor</label>
-                    <input type="text" class="valor">
+                    <input type="text" class="valor" required>
                     <addValue></addValue>
                 </td>
             </tr>
@@ -65,11 +65,13 @@
         if(opt == "add"){
             let inputValue = document.createElement('input')
             inputValue.className = "valor"
+            inputValue.required = true
             inputValue.dataset.item = `valor_${addValue.childNodes.length + 1}`
             addValue.appendChild(inputValue)
             
             let inputKey = document.createElement('input')
             inputKey.className = "chave"
+            inputKey.required = true
             inputKey.dataset.item = `chave_${addKey.childNodes.length + 1}`
             addKey.appendChild(inputKey)
         }
