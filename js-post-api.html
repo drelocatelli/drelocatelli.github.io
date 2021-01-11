@@ -20,8 +20,8 @@
                     <input type="text" id="url" value="https://reqres.in/api/users" autofocus required>
                 </td>
             </tr>
-            <tr>
-                <td>
+            <tr class="params">
+                <td >
                     <label for="chave">Chave</label>
                     <input type="text" class="chave" required>
                     <addKey></addKey>
@@ -32,8 +32,16 @@
                     <addValue></addValue>
                 </td>
             </tr>
+            <tr class="tbody" style="display:none;">
+                <td colspan="2">
+                    <label for="body">Body</label>
+                    <textarea class="body" rows="5"></textarea>
+                </td>
+            </tr>
             <tr class="buttons">
                 <td>
+                    <button type="button" name="body">body</button>
+                    <button type="button" name="params" style="display:none">params</button>
                     <button type="button" name="add">+</button>
                     <button type="button" name="remove">─</button>
                 </td>
@@ -71,6 +79,36 @@
     let submit = document.querySelector('button[type="submit"]')
     let addValue = document.querySelector('addValue')
     let addKey = document.querySelector('addKey')
+
+    let paramsBtn = document.querySelector('button[name="params"]')
+    let paramsEl =document.querySelector('tr.params')
+    let bodyBtn = document.querySelector('button[name="body"]')
+    let bodyEl = document.querySelector('tr.tbody')
+
+    console.log(bodyBtn)
+    
+    bodyBtn.onclick = function(){
+        bodyEl.style.display = "table-row"
+        paramsEl.style.display = "none"
+        bodyBtn.style.display = "none"
+        paramsBtn.style.display = "inline-block"
+
+        addbtn.style.display = "none"
+        removebtn.style.display = "none"
+
+    }
+
+    paramsBtn.onclick = function(){
+        bodyEl.style.display = "none"
+        paramsEl.style.display = "table-row"
+
+        bodyBtn.style.display = "inline-block"
+        paramsBtn.style.display = "none"
+
+        addbtn.style.display = "inline-block"
+        removebtn.style.display = "inline-block"
+
+    }
     
     
     function elementsOpt(opt){
@@ -117,7 +155,6 @@
         let addValue = document.querySelector('addValue')
         elementsOpt("remove")
     }
-
     
     submit.onclick = function(e){
         if(form.checkValidity() == true){
@@ -195,6 +232,7 @@
 
 
 <style>
+   textarea{font-size:15px !important; line-height: 1.6em!important;}
     response, codeapi{
         color:rgb(92, 92, 92);
         font-family: monospace;
@@ -227,8 +265,8 @@
         visibility: hidden;
     }
 
-    button:nth-child(1),button:nth-child(2){
-        margin-right: 25px;
+    button:nth-child(1), button:nth-child(2),button:nth-child(3){
+        margin-right: 5px;
     }
     
     tr:nth-child(4), tr:nth-child(4){
@@ -268,7 +306,7 @@
       box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px black;
     }
 
-    input {
+    input, textarea {
       display: block;
       width: 100%;
       font-size: 14pt;
@@ -284,7 +322,7 @@
       color: black;
     }
 
-    input:focus {
+    input:focus, textarea:focus {
       border-bottom: 5px solid #ffa580;
     }
 
