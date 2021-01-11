@@ -32,7 +32,7 @@
                     <addValue></addValue>
                 </td>
             </tr>
-            <tr>
+            <tr class="buttons">
                 <td>
                     <button type="button" name="add">+</button>
                     <button type="button" name="remove">─</button>
@@ -50,6 +50,10 @@
 
     let form = document.querySelector('#post-api')
 
+    let url = document.querySelector('#url')
+    url.onclick = function(){
+        url.value = ""
+    }
     let addbtn = document.querySelector('button[name="add"]')
     let removebtn = document.querySelector('button[name="remove"]')
     let submit = document.querySelector('button[type="submit"]')
@@ -76,7 +80,7 @@
         }
 
 
-        if(addValue.childNodes.length <= 5 && addKey.childNodes.length <= 5 ){
+        if(addValue.childNodes.length < 5 && addKey.childNodes.length < 5 ){
             if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
                 removebtn.style.visibility = "visible"
                 addbtn.style.visibility = "visible"
@@ -101,31 +105,48 @@
     }
 
     submit.onclick = function(e){
+        // document.querySelector('.buttons').remove()
         e.preventDefault();
 
-        let data = {}
+        let data = '"{ '
 
         if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
-            let inputKey = document.querySelectorAll('.chave').value
-            let inputValue = document.querySelectorAll('.valor').value
+            let inputKey = document.querySelectorAll('.chave')
+            let inputValue = document.querySelectorAll('.valor')
 
-            console.dir(...inputKey)
-
+            for(x = 0; x <= addValue.childNodes.length; x++){
+                if(x == addValue.childNodes.length){
+                    data += `'${inputKey[x].value}' : '${inputValue[x].value}' }"`
+                }else{
+                    data += `'${inputKey[x].value}' : '${inputValue[x].value}', `
+                }
+            }
 
         }else{
             let inputKey = document.querySelector('.chave')
             let inputValue = document.querySelector('.valor')
-            data.push(inputKey.value)
-            data.push(inputValue.value)
+            data += `'${inputKey.value}' : '${inputValue.value}' }"`
         }
+
+        data = JSON.stringify(data)
+
+        POST(data)
 
     }
     
-
 </script>
 
 <script id="apicode">
+    function POST(data){
+      let request = new Request(url.value, {
+        method: 'POST',
+        body: data
+      });
 
+      request.json().then(function(response) { 
+        console.log(response);
+      });
+    }
 </script>
 
 
