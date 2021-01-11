@@ -17,7 +17,7 @@
             <tr>
                 <td colspan="2">
                     <label for="url">URL</label>
-                    <input type="text" id="url" value="https://reqres.in/api/users" required>
+                    <input type="text" id="url" value="https://reqres.in/api/users" autofocus required>
                 </td>
             </tr>
             <tr>
@@ -120,8 +120,8 @@
 
         modal.style.display = "block"
         closeModal.style.display = "block"
-        response = JSON.stringify(response)
-        response = response.replaceAll('\"','\'').replace('{','{ ').replace('}', ' }').replace(':', ': ')
+        response = JSON.stringify(response, null, 4)
+        
         responseEl.innerHTML = `<pre>${response}</pre>`
 
         closeModal.onclick = function(){
@@ -183,6 +183,11 @@
 
 
 <style>
+    response{
+        color:rgb(92, 92, 92);
+        font-family: monospace;
+    }
+
     div#close-modal{
         z-index:1;
         top:0;
@@ -229,12 +234,12 @@
     }
 
     * {
-        font-family:sans-serif;
       margin: 0;
       padding: 0;
     }
 
     body {
+        font-family:sans-serif;
       background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg") center center no-repeat;
       background-size: cover;
       width: 100vw;
