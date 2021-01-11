@@ -43,6 +43,13 @@
             </tr>
         </form>
     </table>
+
+    <div id="close-modal">x</div>
+    <div id="modal">
+        <h3>Resposta:</h3>
+        <br>
+        <response></response>
+    </div>
 </body>
 </html>
 
@@ -106,31 +113,55 @@
         elementsOpt("remove")
     }
 
-    submit.onclick = function(e){
-        // document.querySelector('.buttons').remove()
-        e.preventDefault();
+    function displayModal(response){
+        let responseEl = document.querySelector('response')
+        let modal = document.querySelector('#modal')
+        let closeModal = document.querySelector('#close-modal')
 
-        let data = ' '
+        modal.style.display = "block"
+        closeModal.style.display = "block"
+        response = JSON.stringify(response)
+        response = response.replaceAll('\"','\'').replace('{','{ ').replace('}', ' }').replace(':', ': ')
+        responseEl.innerHTML = `<pre>${response}</pre>`
 
-        if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
-            let inputKey = document.querySelectorAll('.chave')
-            let inputValue = document.querySelectorAll('.valor')
-
-            for(x = 0; x <= addValue.childNodes.length; x++){
-                if(x == addValue.childNodes.length){
-                    data += `"${inputKey[x].value}" : "${inputValue[x].value}" `
-                }else{
-                    data += `"${inputKey[x].value}" : "${inputValue[x].value}", `
-                }
-            }
-
-        }else{
-            let inputKey = document.querySelector('.chave')
-            let inputValue = document.querySelector('.valor')
-            data += `"${inputKey.value}" : "${inputValue.value}" `
+        closeModal.onclick = function(){
+            modal.style.display = "none"
+            closeModal.style.display = "none"
         }
 
-        POST(data)
+
+    }
+
+
+    submit.onclick = function(e){
+        if(form.checkValidity() == true){
+            e.preventDefault();
+
+            let data = ' '
+
+            if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+                let inputKey = document.querySelectorAll('.chave')
+                let inputValue = document.querySelectorAll('.valor')
+
+                for(x = 0; x <= addValue.childNodes.length; x++){
+                    if(x == addValue.childNodes.length){
+                        data += `"${inputKey[x].value}" : "${inputValue[x].value}" `
+                    }else{
+                        data += `"${inputKey[x].value}" : "${inputValue[x].value}", `
+                    }
+                }
+
+            }else{
+                let inputKey = document.querySelector('.chave')
+                let inputValue = document.querySelector('.valor')
+                data += `"${inputKey.value}" : "${inputValue.value}" `
+            }
+
+
+            POST(data)
+        }else{
+            form.validationMessage
+        }
     
     }
     
@@ -140,10 +171,11 @@
     function POST(data){
       let request = new Request(url.value, {
         method: 'POST',
-        body: `{${data}}`
+        body: `{ ${data} }`
       });
 
       request.json().then(function(response) {
+        displayModal(response)
         console.log(response);
       });
     }
@@ -151,6 +183,29 @@
 
 
 <style>
+    div#close-modal{
+        z-index:1;
+        top:0;
+        right:0;
+        padding:10px;
+        margin:15px 25px;
+        cursor:pointer;
+        position: fixed;
+        display: none;
+        user-select: none;
+        font-size: 30px;
+    }
+
+    div#modal {
+        display: none;
+        background: white;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        height: 100%;
+        padding: 24px;
+    }
+
     button[name="remove"]{
         visibility: hidden;
     }
