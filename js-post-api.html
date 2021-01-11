@@ -35,7 +35,8 @@
             <tr class="tbody" style="display:none;">
                 <td colspan="2">
                     <label for="body">Body</label>
-                    <textarea class="body" rows="5"></textarea>
+                    <!--textarea tab-->
+                    <textarea class="body" rows="5" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{&#13;&#10;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'value':'null'&#13;&#10;}</textarea>
                 </td>
             </tr>
             <tr class="buttons">
@@ -46,7 +47,7 @@
                     <button type="button" name="remove">─</button>
                 </td>
                 <td>
-                    <button type="submit">POST</button>
+                    <button type="submit">post</button>
                 </td>
             </tr>
         </form>
@@ -84,8 +85,7 @@
     let paramsEl =document.querySelector('tr.params')
     let bodyBtn = document.querySelector('button[name="body"]')
     let bodyEl = document.querySelector('tr.tbody')
-
-    console.log(bodyBtn)
+    let tbodyEl = document.querySelector('textarea.body')
     
     bodyBtn.onclick = function(){
         bodyEl.style.display = "table-row"
@@ -145,7 +145,6 @@
             removebtn.style.visibility = "visible"
         }
     }
-
     
     addbtn.onclick = function(){
         elementsOpt("add")
@@ -157,34 +156,42 @@
     }
     
     submit.onclick = function(e){
-        if(form.checkValidity() == true){
+        // if(form.checkValidity() == true){
             e.preventDefault();
 
-            let data = ' '
+            let data = ''
 
-            if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
-                let inputKey = document.querySelectorAll('.chave')
-                let inputValue = document.querySelectorAll('.valor')
-
-                for(x = 0; x <= addValue.childNodes.length; x++){
-                    if(x == addValue.childNodes.length){
-                        data += `"${inputKey[x].value}" : "${inputValue[x].value}" `
-                    }else{
-                        data += `"${inputKey[x].value}" : "${inputValue[x].value}", `
-                    }
-                }
-
+            if(bodyEl.style.display != "none"){
+                sendData = tbodyEl.value
+                sendData = sendData.replace('{','').replace('}','').replaceAll("'", "\"").trim()
+                data += sendData
+                
             }else{
-                let inputKey = document.querySelector('.chave')
-                let inputValue = document.querySelector('.valor')
-                data += `"${inputKey.value}" : "${inputValue.value}" `
+
+                if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+                    let inputKey = document.querySelectorAll('.chave')
+                    let inputValue = document.querySelectorAll('.valor')
+
+                    for(x = 0; x <= addValue.childNodes.length; x++){
+                        if(x == addValue.childNodes.length){
+                            data += `"${inputKey[x].value}" : "${inputValue[x].value}" `
+                        }else{
+                            data += `"${inputKey[x].value}" : "${inputValue[x].value}", `
+                        }
+                    }
+
+                }else{
+                    let inputKey = document.querySelector('.chave')
+                    let inputValue = document.querySelector('.valor')
+                    data += `"${inputKey.value}" : "${inputValue.value}" `
+                }
             }
 
 
             POST(data)
-        }else{
-            form.validationMessage
-        }
+        // }else{
+        //     form.validationMessage
+        // }
     
     }
 
