@@ -108,7 +108,7 @@
         // document.querySelector('.buttons').remove()
         e.preventDefault();
 
-        let data = '\"{ '
+        let data = ' '
 
         if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
             let inputKey = document.querySelectorAll('.chave')
@@ -116,19 +116,17 @@
 
             for(x = 0; x <= addValue.childNodes.length; x++){
                 if(x == addValue.childNodes.length){
-                    data += `'${inputKey[x].value}' : '${inputValue[x].value}' }\"`
+                    data += `"${inputKey[x].value}" : "${inputValue[x].value}" `
                 }else{
-                    data += `'${inputKey[x].value}' : '${inputValue[x].value}', `
+                    data += `"${inputKey[x].value}" : "${inputValue[x].value}", `
                 }
             }
 
         }else{
             let inputKey = document.querySelector('.chave')
             let inputValue = document.querySelector('.valor')
-            data += `'${inputKey.value}' : '${inputValue.value}' }\"`
+            data += `"${inputKey.value}" : "${inputValue.value}" `
         }
-
-        data = JSON.stringify(data)
 
         POST(data)
     
@@ -140,11 +138,10 @@
     function POST(data){
       let request = new Request(url.value, {
         method: 'POST',
-        body: data
+        body: `{${data}}`
       });
 
       request.json().then(function(response) {
-        response = JSON.parse(response) 
         console.log(response);
       });
     }
