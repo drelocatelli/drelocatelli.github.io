@@ -10,7 +10,7 @@
         <form id="post-api" method="post">
             <tr>
                 <td colspan="2">
-                    <h3>PURE JS POST API GENERATOR - <a href="https://github.com/drelocatelli/drelocatelli.github.io">DRELOCATELLI</a></h3>
+                    <h3>PURE JS REQUEST API GENERATOR - <a href="https://github.com/drelocatelli/drelocatelli.github.io">DRELOCATELLI</a></h3>
                     <br>
                 </td>
             </tr>
@@ -36,7 +36,7 @@
                 <td colspan="2">
                     <label for="body">Body</label>
                     <!--textarea tab-->
-                    <textarea class="body" rows="5" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{&#13;&#10;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'value':'null'&#13;&#10;}</textarea>
+                    <textarea class="body" rows="5" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{&#13;&#10;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'key':'value'&#13;&#10;}</textarea>
                 </td>
             </tr>
             <tr class="buttons">
@@ -47,7 +47,8 @@
                     <button type="button" name="remove">─</button>
                 </td>
                 <td>
-                    <button type="submit">post</button>
+                    <button type="submit" id="get">get</button>
+                    <button type="submit" id="post">post</button>
                 </td>
             </tr>
         </form>
@@ -67,7 +68,7 @@
 
 <script>
 
-    let form = document.querySelector('#post-api')
+    let form = document.querySelector('form#post-api')
 
     let url = document.querySelector('#url')
     url.onclick = function(){
@@ -75,7 +76,8 @@
     }
     let addbtn = document.querySelector('button[name="add"]')
     let removebtn = document.querySelector('button[name="remove"]')
-    let submit = document.querySelector('button[type="submit"]')
+    let submitGet = document.querySelector('button#get')
+    let submitPost = document.querySelector('button#post')
     let addValue = document.querySelector('addValue')
     let addKey = document.querySelector('addKey')
 
@@ -85,7 +87,7 @@
     let bodyEl = document.querySelector('tr.tbody')
     let tbodyEl = document.querySelector('textarea.body')
 
-    
+
     bodyBtn.onclick = function(){
         bodyEl.style.display = "table-row"
         paramsEl.style.display = "none"
@@ -108,8 +110,8 @@
         removebtn.style.display = "inline-block"
 
     }
-    
-    
+
+
     function elementsOpt(opt){
         if(opt == "add"){
             let inputValue = document.createElement('input')
@@ -117,7 +119,7 @@
             inputValue.required = true
             inputValue.dataset.item = `valor_${addValue.childNodes.length + 1}`
             addValue.appendChild(inputValue)
-            
+
             let inputKey = document.createElement('input')
             inputKey.className = "chave"
             inputKey.required = true
@@ -144,7 +146,7 @@
             removebtn.style.visibility = "visible"
         }
     }
-    
+
     addbtn.onclick = function(){
         elementsOpt("add")
     }
@@ -153,9 +155,19 @@
         let addValue = document.querySelector('addValue')
         elementsOpt("remove")
     }
-    
-    submit.onclick = function(e){
-        // if(form.checkValidity() == true){
+
+    form.onsubmit = function(e){
+        e.preventDefault()
+    }
+
+
+    submitGet.onclick = function(e){
+        if(!url.checkValidity()){
+                url.reportValidity()
+        }else{
+            let inputKey = document.querySelectorAll('.chave')
+            let inputValue = document.querySelectorAll('.valor')
+
             e.preventDefault();
 
             let data = ''
@@ -164,12 +176,10 @@
                 sendData = tbodyEl.value
                 sendData = sendData.replace('{','').replace('}','').replaceAll("'", "\"").trim()
                 data += sendData
-                
+
             }else{
 
                 if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
-                    let inputKey = document.querySelectorAll('.chave')
-                    let inputValue = document.querySelectorAll('.valor')
 
                     for(x = 0; x <= addValue.childNodes.length; x++){
                         if(x == addValue.childNodes.length){
@@ -186,18 +196,77 @@
                 }
             }
 
+            data = '{ '+data+'}'
+            data = JSON.parse(data)
 
-            POST(data)
+            let getParams = ''
+
+            for(x = 0; x < inputKey.length; x++){
+
+                for (var key in data) {
+                    if(key != ''){
+                        getParams += `?${key}=${data[key]}`
+                    }
+                }
+
+            }
+
+            if(getParams != ''){
+                getParams = encodeURI(getParams)
+                url.value = `${url.value}${getParams}`
+            }
             
-        // }else{
-        //     form.validationMessage
-        // }
-    
+            GET()
+        }
+
     }
 
-    function displayModal(response){
+    submitPost.onclick = function(e){
+            if(!url.checkValidity()){
+                url.reportValidity()
+            }else{
+                e.preventDefault();
+
+                let data = ''
+
+                if(bodyEl.style.display != "none"){
+                    sendData = tbodyEl.value
+                    sendData = sendData.replace('{','').replace('}','').replaceAll("'", "\"").trim()
+                    data += sendData
+
+                }else{
+
+                    if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
+                        let inputKey = document.querySelectorAll('.chave')
+                        let inputValue = document.querySelectorAll('.valor')
+
+                        for(x = 0; x <= addValue.childNodes.length; x++){
+                            if(x == addValue.childNodes.length){
+                                data += `"${inputKey[x].value}" : "${inputValue[x].value}" `
+                            }else{
+                                data += `"${inputKey[x].value}" : "${inputValue[x].value}", `
+                            }
+                        }
+
+                    }else{
+                        let inputKey = document.querySelector('.chave')
+                        let inputValue = document.querySelector('.valor')
+                        data += `"${inputKey.value}" : "${inputValue.value}" `
+                    }
+                }
+
+
+                POST(data)
+            }
+
+    }
+
+    function displayModal(response, method){
         let responseEl = document.querySelector('response')
-        let code = document.querySelector('script#apicode')
+        let codePost = document.querySelector('script#apicode-post')
+        let codeGet = document.querySelector('script#apicode-get')
+        let code = ''
+
         let modal = document.querySelector('#modal')
         let closeModal = document.querySelector('#close-modal')
 
@@ -212,10 +281,19 @@
         data = JSON.stringify(response)
         data = data.replaceAll('"','\'')
 
-        code = code.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replace('displayModal(response)', '').replaceAll('     ','').replace('    ','').replace(`
-`,'').replace(`   
-`,'').replace('    ','')
-        code = `<pre>${code}</pre>`
+        if(method == 'POST'){
+            code += codePost.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replace(`   displayModal(response, 'POST')
+`, "").replaceAll('     ','').replace('    ','').replace(`
+            `,'').replace(`
+            `,'').replace('    ','').replace('\n\n','')
+            code = `<pre>${code}</pre>`
+        }
+        if(method == 'GET'){
+            code += codeGet.innerHTML.replace('function GET(data){','').replace('}//GET','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replaceAll('     ','').replace('    ','').replace(`
+                        `,'').replace(`
+                        `,'').replace('    ','').replace(`   displayModal(response, 'GET')`, "").replace('\n\n','')
+            code = `<pre>${code}</pre>`
+        }
 
         response = JSON.stringify(response, null, 4)
         responseEl.innerHTML = `<pre>${response}</pre>`
@@ -242,7 +320,7 @@
             }
         }
 
-        
+
         closeModal.onclick = function(){
             window.location.reload()
         }
@@ -251,7 +329,7 @@
     }
 </script>
 
-<script id="apicode">
+<script id="apicode-post">
     function POST(data){
       let request = new Request(url.value, {
         method: 'POST',
@@ -260,9 +338,24 @@
 
       request.json().then(function(response) {
         console.log(response);
-        displayModal(response)
+        displayModal(response, 'POST')
       });
     }//POST
+</script>
+
+<script id="apicode-get">
+    function GET(){
+      let request = new Request(url.value, {
+        method: 'GET',
+      });
+
+      fetch(request).then(function(response) { return response.text() }).then(function(response){
+        response = JSON.parse(response)
+
+        console.log(response);
+        displayModal(response, 'GET')
+      });
+    }//GET
 </script>
 
 
@@ -278,7 +371,7 @@
         bottom: 0;
         right: 0;
     }
-    
+
     .rawcode, .copycode{
         font-size: 17px;
         padding: 2px 13px;
@@ -312,6 +405,7 @@
     }
 
     div#modal {
+        overflow-y:auto;
         display: none;
         background: white;
         width: 100%;
@@ -319,6 +413,7 @@
         top: 0;
         height: 100%;
         padding: 24px;
+        word-break: break-word;
     }
 
     button[name="remove"]{
@@ -328,7 +423,7 @@
     button:nth-child(1), button:nth-child(2),button:nth-child(3){
         margin-right: 5px;
     }
-    
+
     tr:nth-child(4), tr:nth-child(4){
         text-align: center;
     }
