@@ -56,8 +56,9 @@
     <div id="close-modal">x</div>
     <div id="modal">
         <button class="rawcode">raw code</button>
-        <h3>Resposta:</h3>
-        <br>
+        <button class="copycode">copy code</button>
+        <textarea class="codeInput"></textarea>
+        <h3 class="status">Resposta:</h3>
         <br>
         <response></response>
     </div>
@@ -84,7 +85,6 @@
     let bodyEl = document.querySelector('tr.tbody')
     let tbodyEl = document.querySelector('textarea.body')
 
-    let rawcodeBtn = document.querySelector('button.rawcode')
     
     bodyBtn.onclick = function(){
         bodyEl.style.display = "table-row"
@@ -201,6 +201,12 @@
         let modal = document.querySelector('#modal')
         let closeModal = document.querySelector('#close-modal')
 
+        let rawcodeBtn = document.querySelector('button.rawcode')
+        let copycodeBtn = document.querySelector('button.copycode')
+
+        let codeInput = document.querySelector('.codeInput')
+        let status = document.querySelector('h3.status')
+
         modal.style.display = "block"
         closeModal.style.display = "block"
         data = JSON.stringify(response)
@@ -214,9 +220,26 @@
         response = JSON.stringify(response, null, 4)
         responseEl.innerHTML = `<pre>${response}</pre>`
 
+        codeInput.value = code
+        codeInput.value = codeInput.value.replace('<pre>','').replace('</pre>','')
+
+        copycodeBtn.onclick = function(){
+            codeInput.select()
+            document.execCommand('cut')
+        }
 
         rawcodeBtn.onclick = function(){
-            document.write(code)
+            if(rawcodeBtn.innerText == "raw code"){
+                responseEl.innerHTML = code
+                status.style.display = "none"
+
+                rawcodeBtn.innerText = "response"
+            }else{
+                status.style.display = "block"
+                responseEl.innerHTML = `<pre>${response}</pre>`
+                rawcodeBtn.innerText = "raw code"
+
+            }
         }
 
         
@@ -244,13 +267,29 @@
 
 
 <style>
-    .rawcode{
+    textarea.codeInput {
+        width: 0;
+        box-sizing: border-box;
+        height: 0;
+        font-size: 0px;
+        border: 0;
+        position: absolute;
+        /* visibility: hidden; */
+        bottom: 0;
+        right: 0;
+    }
+    
+    .rawcode, .copycode{
         font-size: 17px;
         padding: 2px 13px;
         box-sizing: border-box;
         position: fixed;
         top: 23px;
         right: 90px;
+    }
+
+    .rawcode{
+        right: 234px;
     }
 
    textarea{font-size:15px !important; line-height: 1.6em!important;}
