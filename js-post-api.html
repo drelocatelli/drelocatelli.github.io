@@ -36,7 +36,7 @@
                 <td colspan="2">
                     <label for="body">Body</label>
                     <!--textarea tab-->
-                    <textarea class="body" rows="5" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{&#13;&#10;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'key':'value'&#13;&#10;}</textarea>
+                    <textarea class="body" rows="5" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{&#13;&#10;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'value':'null'&#13;&#10;}</textarea>
                 </td>
             </tr>
             <tr class="buttons">
@@ -55,10 +55,7 @@
 
     <div id="close-modal">x</div>
     <div id="modal">
-        <h3>Código gerado:</h3>
-        <br>
-        <codeapi></codeapi>
-        <br>
+        <button class="rawcode">raw code</button>
         <h3>Resposta:</h3>
         <br>
         <br>
@@ -86,6 +83,8 @@
     let bodyBtn = document.querySelector('button[name="body"]')
     let bodyEl = document.querySelector('tr.tbody')
     let tbodyEl = document.querySelector('textarea.body')
+
+    let rawcodeBtn = document.querySelector('button.rawcode')
     
     bodyBtn.onclick = function(){
         bodyEl.style.display = "table-row"
@@ -189,6 +188,7 @@
 
 
             POST(data)
+            
         // }else{
         //     form.validationMessage
         // }
@@ -197,7 +197,6 @@
 
     function displayModal(response){
         let responseEl = document.querySelector('response')
-        let codeapiEl = document.querySelector('codeapi')
         let code = document.querySelector('script#apicode')
         let modal = document.querySelector('#modal')
         let closeModal = document.querySelector('#close-modal')
@@ -207,20 +206,26 @@
         data = JSON.stringify(response)
         data = data.replaceAll('"','\'')
 
-        code.innerHTML = code.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replace('displayModal(response)', '').replaceAll('     ','')
-        codeapiEl.innerHTML = `<pre>${code.innerHTML}</pre>`
+        code = code.innerHTML.replace('function POST(data){','').replace('}//POST','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replace('displayModal(response)', '').replaceAll('     ','').replace('    ','').replace(`
+`,'').replace(`   
+`,'').replace('    ','')
+        code = `<pre>${code}</pre>`
 
         response = JSON.stringify(response, null, 4)
         responseEl.innerHTML = `<pre>${response}</pre>`
 
 
+        rawcodeBtn.onclick = function(){
+            document.write(code)
+        }
+
+        
         closeModal.onclick = function(){
             window.location.reload()
         }
 
 
     }
-    
 </script>
 
 <script id="apicode">
@@ -239,6 +244,15 @@
 
 
 <style>
+    .rawcode{
+        font-size: 17px;
+        padding: 2px 13px;
+        box-sizing: border-box;
+        position: fixed;
+        top: 23px;
+        right: 90px;
+    }
+
    textarea{font-size:15px !important; line-height: 1.6em!important;}
     response, codeapi{
         color:rgb(92, 92, 92);
