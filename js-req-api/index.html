@@ -72,7 +72,7 @@
 
     let url = document.querySelector('#url')
     url.onclick = function(){
-        url.value = ""
+        url.select()
     }
     let addbtn = document.querySelector('button[name="add"]')
     let removebtn = document.querySelector('button[name="remove"]')
@@ -331,7 +331,9 @@
 
 
         closeModal.onclick = function(){
-            window.location.reload()
+            url.value = url.value.replace(/\?.*/g, '')
+            modal.style.display = 'none'
+            closeModal.style.display = 'none'
         }
 
 
