@@ -315,6 +315,8 @@
             document.execCommand('cut')
         }
 
+        status.style.display = 'block'
+
         rawcodeBtn.onclick = function(){
             if(rawcodeBtn.innerText == "raw code"){
                 responseEl.innerHTML = code
