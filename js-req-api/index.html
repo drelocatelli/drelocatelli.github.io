@@ -72,7 +72,7 @@
 
     let url = document.querySelector('#url')
     url.onclick = function(){
-        url.value = ""
+        url.select()
     }
     let addbtn = document.querySelector('button[name="add"]')
     let removebtn = document.querySelector('button[name="remove"]')
@@ -176,7 +176,6 @@
                 sendData = tbodyEl.value
                 sendData = sendData.replace('{','').replace('}','').replaceAll("'", "\"").trim()
                 data += sendData
-
             }else{
 
                 if(addValue.childNodes.length > 0 && addKey.childNodes.length > 0 ){
@@ -192,7 +191,9 @@
                 }else{
                     let inputKey = document.querySelector('.chave')
                     let inputValue = document.querySelector('.valor')
-                    data += `"${inputKey.value}" : "${inputValue.value}" `
+                    if(inputKey.value != '' || inputValue.value != ''){
+                        data += `"${inputKey.value}" : "${inputValue.value}" `
+                    }
                 }
             }
 
@@ -205,14 +206,22 @@
 
                 for (var key in data) {
                     if(key != ''){
-                        getParams += `?${key}=${data[key]}`
+                        getParams += `&${key}=${data[key]}`
                     }
                 }
 
             }
 
-            if(getParams != ''){
+            data.length = Object.keys(data).length
+
+            if(data.length == 1){
+                getParams = '?'+getParams
+                getParams = getParams.replace('&','')
                 getParams = encodeURI(getParams)
+                url.value = `${url.value}${getParams}`
+            }else if(data.length > 1){
+                getParams = '?'+encodeURI(getParams)
+                getParams = getParams.replace('&','')
                 url.value = `${url.value}${getParams}`
             }
             
@@ -306,6 +315,8 @@
             document.execCommand('cut')
         }
 
+        status.style.display = 'block'
+
         rawcodeBtn.onclick = function(){
             if(rawcodeBtn.innerText == "raw code"){
                 responseEl.innerHTML = code
@@ -322,7 +333,9 @@
 
 
         closeModal.onclick = function(){
-            window.location.reload()
+            url.value = url.value.replace(/\?.*/g, '')
+            modal.style.display = 'none'
+            closeModal.style.display = 'none'
         }
 
 

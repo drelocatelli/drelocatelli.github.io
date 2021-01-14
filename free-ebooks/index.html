@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free books</title>
+</head>
+<body>
+    <h3>GET FREE EBOOK</h3>
+    <form id="get-ebook">
+        <input type="text" name="ebook-name">
+        <select name="language"><option value="">Qualquer idioma</option><option value="afrikaans">Afrikaans</option><option value="albanian">Albanian</option><option value="arabic">Arabic</option><option value="armenian">Armenian</option><option value="azerbaijani">Azerbaijani</option><option value="bashkir">Bashkir</option><option value="belarusian">Belarusian</option><option value="bengali">Bengali</option><option value="berber">Berber</option><option value="bulgarian">Bulgarian</option><option value="catalan">Catalan</option><option value="chinese" style="font-weight: bold;">Chinese</option><option value="crimean">Crimean Tatar</option><option value="croatian">Croatian</option><option value="czech">Czech</option><option value="danish">Danish</option><option value="dutch" style="font-weight: bold;">Dutch</option><option value="english" style="font-weight: bold;">English</option><option value="esperanto">Esperanto</option><option value="finnish">Finnish</option><option value="french" style="font-weight: bold;">French</option><option value="georgian">Georgian</option><option value="german" style="font-weight: bold;">German</option><option value="greek">Greek</option><option value="gujarati">Gujarati</option><option value="hebrew">Hebrew</option><option value="hindi">Hindi</option><option value="hungarian">Hungarian</option><option value="icelandic">Icelandic</option><option value="indigenous">Indigenous</option><option value="indonesian">Indonesian</option><option value="italian" style="font-weight: bold;">Italian</option><option value="japanese">Japanese</option><option value="kannada">Kannada</option><option value="kazakh">Kazakh</option><option value="kirghiz">Kirghiz</option><option value="korean">Korean</option><option value="latin">Latin</option><option value="latvian">Latvian</option><option value="lithuanian">Lithuanian</option><option value="malayalam">Malayalam</option><option value="marathi">Marathi</option><option value="mongolian">Mongolian</option><option value="nepali">Nepali</option><option value="norwegian">Norwegian</option><option value="odia">Odia</option><option value="persian">Persian</option><option value="polish">Polish</option><option value="portuguese" style="font-weight: bold;" selected="">Portuguese</option><option value="romanian">Romanian</option><option value="russian" style="font-weight: bold;">Russian</option><option value="sanskrit">Sanskrit</option><option value="serbian">Serbian</option><option value="sinhala">Sinhala</option><option value="slovak">Slovak</option><option value="slovenian">Slovenian</option><option value="somali">Somali</option><option value="spanish" style="font-weight: bold;">Spanish</option><option value="swahili">Swahili</option><option value="swedish">Swedish</option><option value="tajik">Tajik</option><option value="tamil">Tamil</option><option value="tatar">Tatar</option><option value="telugu">Telugu</option><option value="turkish">Turkish</option><option value="ukrainian">Ukrainian</option><option value="urdu">Urdu</option><option value="uzbek">Uzbek</option><option value="vietnamese">Vietnamese</option></select>
+
+        <select name="extension"><option value="">Qualquer extensão</option><option value="pdf">pdf</option><option value="epub">epub</option><option value="djvu">djvu</option><option value="fb2">fb2</option><option value="txt">txt</option><option value="rar">rar</option><option value="mobi">mobi</option><option value="lit">lit</option><option value="doc">doc</option><option value="rtf">rtf</option><option value="azw3">azw3</option></select>
+
+        <button type="submit">Pesquisar</button>
+    </form>
+</body>
+</html>
+
+<script>
+    let link = 'https://b-ok.lat/s/'
+    let form = document.querySelector('form#get-ebook')
+    let submitBtn = document.querySelector('button[type=submit]')
+    let ebookName = form.querySelector('input[name=ebook-name]')
+    ebookName.required = true
+    let ebookLang =  form.querySelector('select[name=language]')
+    let ebookExt = form.querySelector('select[name=extension]')
+    let params = ''
+    
+    form.onsubmit = function(e){
+        e.preventDefault()
+
+        if(ebookExt.value != ''){
+            params = '&extension='+ebookExt.value
+        }
+        
+        link = link+ebookName.value+'/?language='+ebookLang.value+params
+        link = encodeURI(link)
+
+        window.open(link,'_blank')
+
+        link = 'https://b-ok.lat/s/'
+    }
+
+</script>
+
+<style>
+    
+</style>
