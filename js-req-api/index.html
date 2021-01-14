@@ -298,7 +298,7 @@
             code = `<pre>${code}</pre>`
         }
         if(method == 'GET'){
-            code += codeGet.innerHTML.replace('function GET(data){','').replace('}//GET','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replaceAll('     ','').replace('    ','').replace(`
+            code += codeGet.innerHTML.replace('function GET(){','').replace('}//GET','').replace('url.value', `'${url.value}'`).replace('{ ${data} }', data).replaceAll('`', '\"').replaceAll('     ','').replace('    ','').replace(`
                         `,'').replace(`
                         `,'').replace('    ','').replace(`   displayModal(response, 'GET')`, "").replace('\n\n','')
             code = `<pre>${code}</pre>`
