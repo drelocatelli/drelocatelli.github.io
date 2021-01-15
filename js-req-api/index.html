@@ -200,17 +200,15 @@
             data = '{ '+data+'}'
             data = JSON.parse(data)
 
+
             let getParams = ''
 
-            for(x = 0; x < inputKey.length; x++){
 
                 for (var key in data) {
                     if(key != ''){
                         getParams += `&${key}=${data[key]}`
                     }
                 }
-
-            }
 
             data.length = Object.keys(data).length
 
@@ -284,6 +282,7 @@
 
         let codeInput = document.querySelector('.codeInput')
         let status = document.querySelector('h3.status')
+        
 
         modal.style.display = "block"
         closeModal.style.display = "block"
@@ -333,6 +332,7 @@
 
 
         closeModal.onclick = function(){
+
             url.value = url.value.replace(/\?.*/g, '')
             modal.style.display = 'none'
             closeModal.style.display = 'none'
