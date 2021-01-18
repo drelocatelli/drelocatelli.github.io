@@ -19,7 +19,6 @@
 </html>
 
 <script>
-    let link = 'https://b-ok.lat/s/'
     let form = document.querySelector('form#get-ebook')
     let submitBtn = document.querySelector('button[type=submit]')
     let ebookName = form.querySelector('input[name=ebook-name]')
@@ -35,6 +34,7 @@
             params = '&extension='+ebookExt.value
         }
         
+        let link = 'https://b-ok.lat/s/'
         link = link+ebookName.value+'/?language='+ebookLang.value+params
         link = encodeURI(link)
 
