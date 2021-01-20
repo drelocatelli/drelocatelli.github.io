@@ -226,6 +226,7 @@
             try{
                 GET()
             }catch(err){
+                console.dir(err)
                 if(err.name == 'SyntaxError'){
                     alert('Ocorreu um erro, verifique os parâmetros')
                 }
