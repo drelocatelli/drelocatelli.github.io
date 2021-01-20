@@ -223,7 +223,13 @@
                 url.value = `${url.value}${getParams}`
             }
             
-            GET()
+            try{
+                GET()
+            }catch(err){
+                if(err.name == 'SyntaxError'){
+                    alert('Ocorreu um erro, verifique os parâmetros')
+                }
+            }
         }
 
     }
@@ -263,7 +269,13 @@
                 }
 
 
-                POST(data)
+                try{
+                    POST(data)
+                }catch(err){
+                    if(err.name == 'SyntaxError'){
+                        alert('Ocorreu um erro, verifique os parâmetros')
+                    }
+                }
             }
 
     }
