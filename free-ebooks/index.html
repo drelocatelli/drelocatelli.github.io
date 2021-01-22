@@ -15,6 +15,11 @@
 
         <button type="submit">Pesquisar</button>
     </form>
+
+    <br><br>
+    <div class="sites">
+
+    </div>
 </body>
 </html>
 
@@ -34,27 +39,25 @@
             params = '&extension='+ebookExt.value
         }
         
-        let link = 'https://b-ok.lat/s/'
-        link = link+ebookName.value+'/?language='+ebookLang.value+params
-        link = encodeURI(link)
+        let bookList = [
+            `https://b-ok.lat/s/${ebookName.value}/?language=${ebookLang.value}${params}`,
+            `https://docero.com.br/show/?q=${ebookName.value}`,
+            `https://libgen.is/search.php?req=${ebookName.value}`,
+            `https://lelivros.love/?x=0&y=0&s=${ebookName.value}`
+        ]
 
-        window.open(link,'_blank')
-        
-        link = 'https://docero.com.br/show/?q='
-        link = link+ebookName.value
-        
-        window.open(link,'_blank')
+        book = ''
+        bookList.forEach(function(item){
+            book += `<a href="${encodeURI(item)}" target="_blank">${encodeURI(item)}</a><br><br>`
+        })
 
-        link = 'https://libgen.is/search.php?req='
-        link = link+ebookName.value
-        
-        window.open(link,'_blank')
+        document.querySelector('div.sites').innerHTML += book
 
-        link = ''
+        
     }
 
 </script>
 
 <style>
-    
+    *{font-size:38px;}
 </style>
