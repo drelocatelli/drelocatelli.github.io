@@ -33,6 +33,7 @@
     let params = ''
     
     form.onsubmit = function(e){
+        document.querySelector('.sites').innerHTML = ''
         e.preventDefault()
 
         if(ebookExt.value != ''){
@@ -56,9 +57,7 @@
         
     }
     
-    document.querySelector("#get-ebook > input[type=text]").onchange = () => {
-        document.querySelector('.sites').innerHTML = ''
-    }
+   
 
 </script>
 
