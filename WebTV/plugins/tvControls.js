@@ -1,3 +1,6 @@
+let televisao = document.querySelector('#televisao')
+let videoPlayer = document.querySelector('video[name=videoPlayer]')
+
 function TVcontrols() {
     let controls = document.querySelector("div.controls .btn-controls");
     
@@ -43,7 +46,7 @@ function TVcontrols() {
 TVcontrols()
 
 function videoPlayerProperties() {
-    videoPlayer.autoplay = false;
+    videoPlayer.autoplay = true;
     videoPlayer.controls = false;
     videoPlayer.style = "width:800px; height:450px;"
     videoPlayer.id = "example-video"
@@ -54,3 +57,5 @@ function videoPlayerProperties() {
 }
 
 videoPlayerProperties()
+
+
